@@ -229,6 +229,7 @@ export interface AtomicalOperationBuilderOptions {
     commitTime?: number;
     commitNonce?: number;
     commitScriptPubKey?: string;
+    refundCommitUponMaxMint?: boolean;
 }
 
 export class AtomicalOperationBuilder {
@@ -283,15 +284,6 @@ export class AtomicalOperationBuilder {
                 throw new Error("dmtOptions required for dmt type");
             }
         }
-        // if (!this.options.commitTime) {
-        //     throw new Error("commitTime required");
-        // }
-        // if (!this.options.commitNonce) {
-        //     throw new Error("commitNonce required");
-        // }
-        // if (!this.options.commitScriptPubKey) {
-        //     throw new Error("commitScriptPubKey required");
-        // }
     }
 
     setRBF(value: boolean) {
@@ -711,7 +703,7 @@ export class AtomicalOperationBuilder {
 
         let shouldBroadcast = !performBitworkForRevealTx;
 
-        if (performBitworkForRevealTx) {
+        if (performBitworkForRevealTx && !this.options.refundCommitUponMaxMint) {
             // leave optional arg commit with default(false), for bitworkr
             printBitworkLog(this.bitworkInfoReveal as any);
 
@@ -1055,7 +1047,7 @@ export class AtomicalOperationBuilder {
                 "\nRevealers have completed their tasks for the reveal transaction.\n"
             );
         } else {
-            // performBitworkForRevealTx == false
+            // performBitworkForRevealTx == false or refund from commit to funding address due to max mint reached
             const tapLeafScript = {
                 leafVersion: hashLockP2TR.redeem.redeemVersion,
                 script: hashLockP2TR.redeem.output,

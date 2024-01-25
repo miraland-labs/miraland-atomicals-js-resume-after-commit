@@ -75,8 +75,11 @@ export class MintInteractiveDftCommand implements CommandInterface {
     const max_mints = atomicalDecorated['$max_mints']
     const mint_count = atomicalDecorated['dft_info']['mint_count'];
     const ticker = atomicalDecorated['$ticker'];
+    let refundCommitUponMaxMint = false;
     if (atomicalDecorated['dft_info']['mint_count'] >= atomicalDecorated['$max_mints']) {
-      throw new Error(`Decentralized mint for ${ticker} completely minted out!`)
+      // throw new Error(`Decentralized mint for ${ticker} completely minted out!`)
+      console.log(`Decentralized mint for ${ticker} completely minted out! Trying to refund once the previous commit is verified.`)
+      refundCommitUponMaxMint = true;
     } else {
       console.log(`There are already ${mint_count} mints of ${ticker} out of a max total of ${max_mints}.`)
     }
@@ -99,6 +102,7 @@ export class MintInteractiveDftCommand implements CommandInterface {
       commitTime: this.options.commitTime,
       commitNonce: this.options.commitNonce,
       commitScriptPubKey: this.options.commitScriptPubKey,
+      refundCommitUponMaxMint,
     });
 
     // Attach any default data
@@ -119,7 +123,8 @@ export class MintInteractiveDftCommand implements CommandInterface {
 
     // The receiver output of the deploy
     atomicalBuilder.addOutput({
-      address: this.address,
+      // address: this.address,
+      address: refundCommitUponMaxMint ? keypair.address : this.address,
       value: perAmountMint
     })
 
