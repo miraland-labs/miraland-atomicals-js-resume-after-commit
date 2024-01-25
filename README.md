@@ -35,7 +35,7 @@ Special consideration: Once max mints has been reached, the reveal will not be p
 
 ## Where to find above argument values?
 
---committime, --commitnonce, looking for the line containing some pattern like ```time: (number)  nonce: (number)``` or the same value in ```finalCopyData`````` printed in console output.
+--committime, --commitnonce, looking for the line containing some pattern like ```time: (number)  nonce: (number)``` in miraland-atomicals-js release or the same value in ```finalCopyData`````` immediately after the line starting with "Bitwork matches commit txid!" printed in console output.
 
 --commitspk, can be found by searching your txid at https://mempool.space, please see screenshots below
 
