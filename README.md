@@ -31,6 +31,8 @@ Options:
           Previous commit tx first output script pubkey
 ```
 
+Special consideration: Once max mints has been reached, the reveal will not be possible, the mint amount will be refunded to your original funding wallet with the exception of the transaction fee paid to the miners as scheduled.
+
 ## Where to find above argument values?
 
 --committime, --commitnonce, looking for the line containing some pattern like ```time: (number)  nonce: (number)``` or the same value in ```finalCopyData`````` printed in console output.
